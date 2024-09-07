@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      category_medicine_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
       old_price: DataTypes.FLOAT,
       new_price: DataTypes.FLOAT,

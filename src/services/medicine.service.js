@@ -1,7 +1,10 @@
+const { Op } = require("sequelize");
 const { NotFoundError, BadRequestError } = require("../core/error.response");
 const { Medicine } = require("../models/index");
 class MedicineService {
-  static getAllMedicines = async ({ page, limit }) => {
+  static getAllMedicines = async ({ page, limit, categoryId, q }) => {
+    console.log("categoryId", categoryId);
+
     const options = {
       order: [["created_at", "desc"]],
     };
@@ -14,6 +17,18 @@ class MedicineService {
       const offset = (page - 1) * limit;
       options.offset = offset;
     }
+
+    if (categoryId) {
+      options.where = { category_medicine_id: +categoryId };
+    }
+
+    if (q) {
+      options.where = {
+        name: { [Op.iLike]: `%${q}%` },
+      };
+    }
+
+    console.log("options", options);
 
     const { rows: medicines, count } = await Medicine.findAndCountAll(options);
     return {
