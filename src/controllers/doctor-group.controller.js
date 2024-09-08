@@ -21,6 +21,20 @@ class DoctorGroupController {
       data: await DoctorGroupService.createDoctorGroup(req.body),
     }).send(res);
   };
+
+  static updateDoctorGroup = async (req, res) => {
+    new SuccessResponse({
+      message: "Update doctor group Success!",
+      data: await DoctorGroupService.updateDoctorGroup(req.params, req.body),
+    }).send(res);
+  };
+
+  static deleteDoctorGroup = async (req, res) => {
+    new SuccessResponse({
+      message: "Delete articles Success!",
+      data: await DoctorGroupService.deleteDoctorGroup(req.params),
+    }).send(res);
+  };
 }
 
 module.exports = DoctorGroupController;

@@ -36,6 +36,31 @@ class DoctorGroupService {
     if (!doctorGroup) throw new BadRequestError("Create DoctorGroup error");
     return doctorGroup;
   };
+
+  static updateDoctorGroup = async ({ id }, payload) => {
+    const doctorGroup = await DoctorGroup.findByPk(id);
+    if (!doctorGroup) {
+      throw new NotFoundError("doctorGroup not found!");
+    }
+    await doctorGroup.update(payload, {
+      where: {
+        id,
+      },
+    });
+  };
+
+  static deleteDoctorGroup = async ({ id }) => {
+    const doctorGroup = await DoctorGroup.findByPk(id);
+    if (!doctorGroup) {
+      throw new NotFoundError("doctorGroup not found!");
+    }
+    const deleted = await DoctorGroup.destroy({
+      where: {
+        id,
+      },
+    });
+    return deleted;
+  };
 }
 
 module.exports = DoctorGroupService;
