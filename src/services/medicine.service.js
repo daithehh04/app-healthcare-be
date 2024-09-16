@@ -1,12 +1,19 @@
 const { Op } = require("sequelize");
 const { NotFoundError, BadRequestError } = require("../core/error.response");
-const { Medicine } = require("../models/index");
+const { Medicine, CategoryMedicine } = require("../models/index");
 class MedicineService {
   static getAllMedicines = async ({ page, limit, categoryId, q }) => {
     console.log("categoryId", categoryId);
 
     const options = {
       order: [["created_at", "desc"]],
+      include: [
+        {
+          model: CategoryMedicine,
+          as: "categoryMedicine",
+          attributes: ["id", "name"],
+        },
+      ],
     };
     if (!+page || page < 0) {
       page = 1;
@@ -27,8 +34,6 @@ class MedicineService {
         name: { [Op.iLike]: `%${q}%` },
       };
     }
-
-    console.log("options", options);
 
     const { rows: medicines, count } = await Medicine.findAndCountAll(options);
     return {
@@ -68,7 +73,15 @@ class MedicineService {
     return medicine;
   };
   static createMedicine = async (payload) => {
-    const { name, old_price, new_price, description, image, rate } = payload;
+    const {
+      name,
+      old_price,
+      new_price,
+      description,
+      image,
+      rate,
+      category_medicine_id,
+    } = payload;
     const medicine = await Medicine.create(payload);
     if (!medicine) throw new BadRequestError("Create medicine error");
     return medicine;

@@ -31,7 +31,7 @@ class DoctorGroupController {
 
   static deleteDoctorGroup = async (req, res) => {
     new SuccessResponse({
-      message: "Delete articles Success!",
+      message: "Delete doctor group Success!",
       data: await DoctorGroupService.deleteDoctorGroup(req.params),
     }).send(res);
   };

@@ -14,6 +14,23 @@ class CategoryMedicineController {
       data: await CategoryMedicineService.createCategoryMedicine(req.body),
     }).send(res);
   };
+
+  static updateCategoryMedicine = async (req, res) => {
+    new SuccessResponse({
+      message: "Update category medicine Success!",
+      data: await CategoryMedicineService.updateCategoryMedicine(
+        req.params,
+        req.body
+      ),
+    }).send(res);
+  };
+
+  static deleteCategoryMedicine = async (req, res) => {
+    new SuccessResponse({
+      message: "Delete category medicine Success!",
+      data: await CategoryMedicineService.deleteCategoryMedicine(req.params),
+    }).send(res);
+  };
 }
 
 module.exports = CategoryMedicineController;
