@@ -28,7 +28,6 @@ class CategoryMedicineService {
     const categoryMedicine = await CategoryMedicine.findOne({
       where: { name },
     });
-    console.log("categoryMedicine::", categoryMedicine);
     if (categoryMedicine) {
       throw new BadRequestError("Category exist!");
     }

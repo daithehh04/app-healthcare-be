@@ -3,8 +3,6 @@ const { NotFoundError, BadRequestError } = require("../core/error.response");
 const { Medicine, CategoryMedicine } = require("../models/index");
 class MedicineService {
   static getAllMedicines = async ({ page, limit, categoryId, q }) => {
-    console.log("categoryId", categoryId);
-
     const options = {
       order: [["created_at", "desc"]],
       include: [

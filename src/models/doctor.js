@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "doctor_group_id",
         as: "doctor_group",
       });
+      Doctor.belongsTo(models.Branch, {
+        foreignKey: "branch_id",
+        as: "branch",
+      });
       Doctor.belongsToMany(models.User, {
         through: models.BookAppointment,
         foreignKey: "doctor_id",
@@ -35,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       phone: DataTypes.STRING,
       exp: DataTypes.FLOAT,
       price: DataTypes.FLOAT,
+      branch_id: DataTypes.INTEGER,
     },
     {
       sequelize,

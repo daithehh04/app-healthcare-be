@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       BookAppointment.belongsTo(models.Doctor, { foreignKey: "doctor_id" });
       BookAppointment.belongsTo(models.User, { foreignKey: "user_id" });
+      BookAppointment.belongsTo(models.Branch, { foreignKey: "branch_id" });
     }
   }
   BookAppointment.init(
@@ -24,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.STRING,
       start_time: DataTypes.DATE,
       end_time: DataTypes.DATE,
+      branch_id: DataTypes.INTEGER,
     },
     {
       sequelize,
