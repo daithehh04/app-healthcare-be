@@ -10,8 +10,8 @@ const {
 const router = express.Router();
 
 router.get("/branches", asyncHandler(getAllBranches));
-router.patch("/branch", asyncHandler(updateBranch));
-router.delete("/branch", asyncHandler(deleteBranch));
+router.patch("/branch/:id", asyncHandler(updateBranch));
+router.delete("/branch/:id", asyncHandler(deleteBranch));
 router.post("/branch", asyncHandler(createBranch));
 
 module.exports = router;
