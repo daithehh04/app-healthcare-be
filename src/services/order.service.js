@@ -12,6 +12,7 @@ class CartService {
         },
       ],
     };
+    options.where = {};
     if (userId) {
       options.where.user_id = userId;
     }
@@ -28,6 +29,7 @@ class CartService {
     if (status) {
       options.where.status = status;
     }
+    console.log("options", options);
 
     const { rows: carts, count } = await Cart.findAndCountAll(options);
     return {

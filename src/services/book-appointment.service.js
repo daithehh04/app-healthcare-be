@@ -1,8 +1,20 @@
 const { Op } = require("sequelize");
 const { NotFoundError, BadRequestError } = require("../core/error.response");
-const { BookAppointment, Doctor, User, Branch } = require("../models/index");
+const {
+  BookAppointment,
+  Doctor,
+  User,
+  Branch,
+  DoctorGroup,
+} = require("../models/index");
 class BookAppointmentService {
-  static getAllBookAppointment = async ({ page, limit, userId, keyword }) => {
+  static getAllBookAppointment = async ({
+    page,
+    limit,
+    userId,
+    keyword,
+    status,
+  }) => {
     const options = {
       include: [
         {
@@ -10,6 +22,12 @@ class BookAppointmentService {
         },
         {
           model: Doctor,
+          include: [
+            {
+              model: DoctorGroup,
+              as: "doctor_group",
+            },
+          ],
         },
         {
           model: User,
@@ -17,11 +35,18 @@ class BookAppointmentService {
       ],
       order: [["updated_at", "desc"]],
     };
-    if (userId) {
+    // if (userId) {
+    //   options.where = {
+    //     user_id: userId,
+    //   };
+    // }
+    if (userId || status) {
       options.where = {
-        user_id: userId,
+        ...(userId && { user_id: userId }), // Spread operator adds condition only if userId exists
+        ...(status && { status }), // Spread operator adds condition only if status exists
       };
     }
+
     if (keyword) {
       options.include.forEach((includeOption) => {
         console.log(
@@ -58,6 +83,7 @@ class BookAppointmentService {
         phone: appointment.Doctor.phone,
         exp: appointment.Doctor.exp,
         price: appointment.Doctor.price,
+        group: appointment.Doctor.doctor_group?.name,
       },
       user: {
         id: appointment.User.id,
