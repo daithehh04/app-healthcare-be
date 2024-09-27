@@ -11,6 +11,11 @@ class DoctorService {
           as: "branch",
           attributes: ["id", "address"],
         },
+        {
+          model: DoctorGroup,
+          as: "doctor_group",
+          attributes: ["id", "name"],
+        },
       ],
     };
     if (doctorGroupId) {
