@@ -26,6 +26,18 @@ module.exports = (sequelize, DataTypes) => {
       address: {
         type: DataTypes.STRING,
       },
+      latitude: {
+        type: DataTypes.DOUBLE,
+        allowNull: false, // Required field
+      },
+      longitude: {
+        type: DataTypes.DOUBLE,
+        allowNull: false, // Required field
+      },
+      geom: {
+        type: DataTypes.GEOGRAPHY("POINT", 4326), // Use EPSG:4326
+        allowNull: false, // Required field
+      },
     },
     {
       sequelize,
