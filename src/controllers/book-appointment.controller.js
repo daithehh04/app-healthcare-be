@@ -12,110 +12,125 @@ class BookAppointmentController {
     }).send(res);
   };
   static createBookAppointment = async (req, res) => {
-    const { doctorId, userId, startTime, endTime } = req.body;
+    const { doctorId, userId, startTime, endTime, branch_id } = req.body;
     //     console.log(req.body);
     const response = {};
     try {
-      const doctorFind = await Doctor.findByPk(doctorId);
-      const userFind = await User.findByPk(userId);
-      if (!doctorFind) {
-        return res
-          .status(404)
-          .json({ status: 404, message: "Bác sĩ  không tồn tại!" });
-      }
-      if (!userFind) {
-        return res
-          .status(404)
-          .json({ status: 404, message: "Tài khoản không tồn tại!" });
-      }
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      if (start < new Date()) {
-        return res.status(400).json({
-          status: 400,
-          message:
-            "Thời gian bắt đầu phải lớn hơn hoặc bằng thời gian hiện tại!",
+      if (!doctorId) {
+        await BookAppointment.create({
+          doctor_id: null,
+          user_id: userId,
+          start_time: startTime,
+          end_time: endTime,
+          status: "pending",
+          branch_id: branch_id,
         });
-      }
-      if (start >= end) {
-        return res.status(400).json({
-          status: 400,
-          message: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!",
-        });
-      }
-      if ((end.getTime() - start.getTime()) / 3600000 < 1) {
-        return res.status(400).json({
-          status: 400,
-          message: "Thời gian hẹn lịch tối thiệu là 1 hoặc tối thiểu là 1 giờ",
-        });
-      }
-      if ((end.getTime() - start.getTime()) / 3600000 > 4) {
-        return res.status(400).json({
-          status: 400,
-          message: "Thời gian hẹn lịch tối đa là 3 giờ hoặc tối thiểu là 1 giờ",
-        });
-      }
-      const existingAppointments = await BookAppointment.findOne({
-        where: {
-          doctor_id: doctorId,
-          status: {
-            [Op.or]: ["pending"],
+        response.status = 201;
+        response.message = "thêm thành công";
+      } else {
+        const doctorFind = await Doctor.findByPk(doctorId);
+        const userFind = await User.findByPk(userId);
+        if (!doctorFind) {
+          return res
+            .status(404)
+            .json({ status: 404, message: "Bác sĩ  không tồn tại!" });
+        }
+        if (!userFind) {
+          return res
+            .status(404)
+            .json({ status: 404, message: "Tài khoản không tồn tại!" });
+        }
+        const start = new Date(startTime);
+        const end = new Date(endTime);
+        if (start < new Date()) {
+          return res.status(400).json({
+            status: 400,
+            message:
+              "Thời gian bắt đầu phải lớn hơn hoặc bằng thời gian hiện tại!",
+          });
+        }
+        if (start >= end) {
+          return res.status(400).json({
+            status: 400,
+            message: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!",
+          });
+        }
+        if ((end.getTime() - start.getTime()) / 3600000 < 1) {
+          return res.status(400).json({
+            status: 400,
+            message:
+              "Thời gian hẹn lịch tối thiệu là 1 hoặc tối thiểu là 1 giờ",
+          });
+        }
+        if ((end.getTime() - start.getTime()) / 3600000 > 4) {
+          return res.status(400).json({
+            status: 400,
+            message:
+              "Thời gian hẹn lịch tối đa là 3 giờ hoặc tối thiểu là 1 giờ",
+          });
+        }
+        const existingAppointments = await BookAppointment.findOne({
+          where: {
+            doctor_id: doctorId,
+            status: {
+              [Op.or]: ["pending"],
+            },
+            [Op.or]: [
+              {
+                start_time: {
+                  [Op.between]: [start, end],
+                },
+              },
+              {
+                end_time: {
+                  [Op.between]: [start, end],
+                },
+              },
+              {
+                [Op.and]: [
+                  {
+                    start_time: {
+                      [Op.lte]: start,
+                    },
+                  },
+                  {
+                    end_time: {
+                      [Op.gte]: end,
+                    },
+                  },
+                ],
+              },
+            ],
           },
-          [Op.or]: [
-            {
-              start_time: {
-                [Op.between]: [start, end],
-              },
-            },
-            {
-              end_time: {
-                [Op.between]: [start, end],
-              },
-            },
-            {
-              [Op.and]: [
-                {
-                  start_time: {
-                    [Op.lte]: start,
-                  },
-                },
-                {
-                  end_time: {
-                    [Op.gte]: end,
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      });
-      if (existingAppointments) {
-        return res.status(409).json({
-          status: 409,
-          message: "Bác sĩ đã có lịch hẹn trong khoảng thời gian này!",
         });
+        if (existingAppointments) {
+          return res.status(409).json({
+            status: 409,
+            message: "Bác sĩ đã có lịch hẹn trong khoảng thời gian này!",
+          });
+        }
+        // await userFind.addDoctor(doctorFind,
+        //      {
+        //           through:
+        //           {
+        //                start_time: startTime,
+        //                end_time: endTime,
+        //                status: 'pending',
+        //           }
+        //      });
+        // const branch_id = doctorFind.branch_id;
+        console.log(branch_id);
+        await BookAppointment.create({
+          doctor_id: doctorId,
+          user_id: userId,
+          start_time: startTime,
+          end_time: endTime,
+          status: "pending",
+          branch_id: branch_id,
+        });
+        response.status = 201;
+        response.message = "cập nhật thành công";
       }
-      // await userFind.addDoctor(doctorFind,
-      //      {
-      //           through:
-      //           {
-      //                start_time: startTime,
-      //                end_time: endTime,
-      //                status: 'pending',
-      //           }
-      //      });
-      // const branch_id = doctorFind.branch_id;
-      console.log(branch_id);
-      await BookAppointment.create({
-        doctor_id: doctorId,
-        user_id: userId,
-        start_time: startTime,
-        end_time: endTime,
-        status: "pending",
-        branch_id: branch_id,
-      });
-      response.status = 201;
-      response.message = "cập nhật thành công";
     } catch (e) {
       response.status = 500;
       response.message = e?.message;
