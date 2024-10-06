@@ -50,6 +50,7 @@ class CartService {
       description,
       image,
     } = payload;
+    console.log("userId", user_id);
     const findCart = await Cart.findOne({
       where: {
         user_id,
