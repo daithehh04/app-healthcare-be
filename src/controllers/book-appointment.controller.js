@@ -12,10 +12,24 @@ class BookAppointmentController {
     }).send(res);
   };
   static createBookAppointment = async (req, res) => {
-    const { doctorId, userId, startTime, endTime, branch_id } = req.body;
+    const {
+      doctorId,
+      userId,
+      startTime,
+      endTime,
+      branch_id,
+      phone,
+      specialist_id,
+    } = req.body;
     let branchId;
-
+    let specialistId;
+    console.log("Doctor_id : ", doctorId);
+    console.log("User_id : ", userId);
+    console.log("Start_time : ", startTime);
+    console.log("End_time : ", endTime);
     console.log("Branch_id : ", branch_id);
+    console.log("Sepecialist_id : ", specialist_id);
+    console.log("PHone : ", phone);
     //     console.log(req.body);
     const response = {};
     try {
@@ -27,6 +41,8 @@ class BookAppointmentController {
           end_time: endTime,
           status: "pending",
           branch_id: branch_id,
+          phone: phone,
+          specialist_id: specialist_id,
         });
         response.status = 201;
         response.message = "thêm thành công";
@@ -123,6 +139,11 @@ class BookAppointmentController {
         //      });
         if (!branch_id) {
           branchId = doctorFind.branch_id;
+          console.log("branchId : ", branchId);
+        }
+        if (!specialist_id) {
+          specialistId = doctorFind.doctor_group_id;
+          console.log("specialistId : ", specialistId);
         }
         // console.log(branch_id);
         await BookAppointment.create({
@@ -130,8 +151,10 @@ class BookAppointmentController {
           user_id: userId,
           start_time: startTime,
           end_time: endTime,
+          phone: null,
           status: "pending",
           branch_id: branchId,
+          specialist_id: specialistId,
         });
         response.status = 201;
         response.message = "cập nhật thành công";
