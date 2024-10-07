@@ -31,7 +31,7 @@ module.exports = {
           ],
         },
         order: [[Sequelize.literal("distance"), "ASC"]], // Sắp xếp theo khoảng cách
-        limit: 2, // Giới hạn trả về 10 địa điểm gần nhất
+        // limit: 2, // Giới hạn trả về 10 địa điểm gần nhất
       });
 
       res.json(places);

@@ -104,7 +104,7 @@ class BookAppointmentController {
       //                status: 'pending',
       //           }
       //      });
-      const branch_id = doctorFind.branch_id;
+      const branch_id = doctorFind.branch_id;////nay
       console.log(branch_id);
       await BookAppointment.create({
         doctor_id: doctorId,
