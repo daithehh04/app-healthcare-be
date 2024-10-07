@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       start_time: DataTypes.DATE,
       end_time: DataTypes.DATE,
       branch_id: DataTypes.INTEGER,
+      phone: DataTypes.STRING,
+      specialist_id: DataTypes.INTEGER,
     },
     {
       sequelize,
