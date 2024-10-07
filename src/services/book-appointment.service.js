@@ -40,6 +40,7 @@ class BookAppointmentService {
     //     user_id: userId,
     //   };
     // }
+    options.where = {};
     if (userId || status) {
       options.where = {
         ...(userId && { user_id: userId }), // Spread operator adds condition only if userId exists
@@ -73,17 +74,17 @@ class BookAppointmentService {
     }
     const { rows: appointmentsResult, count } =
       await BookAppointment.findAndCountAll(options);
-
+    console.log(appointmentsResult);
     const appointments = appointmentsResult.map((appointment) => ({
       doctor: {
-        id: appointment.Doctor.id,
-        name: appointment.Doctor.name,
-        image: appointment.Doctor.image,
-        address: appointment.Doctor.address,
-        phone: appointment.Doctor.phone,
-        exp: appointment.Doctor.exp,
-        price: appointment.Doctor.price,
-        group: appointment.Doctor.doctor_group?.name,
+        id: appointment.Doctor?.id,
+        name: appointment.Doctor?.name,
+        image: appointment.Doctor?.image,
+        address: appointment.Doctor?.address,
+        phone: appointment.Doctor?.phone,
+        exp: appointment.Doctor?.exp,
+        price: appointment.Doctor?.price,
+        group: appointment.Doctor?.doctor_group?.name,
       },
       user: {
         id: appointment.User.id,
