@@ -1,4 +1,4 @@
-const { SuccessResponse } = require("../core/success.response");
+const { SuccessResponse, CREATED } = require("../core/success.response");
 const BranchService = require("../services/branch.service");
 
 class BranchController {
@@ -22,9 +22,9 @@ class BranchController {
     }).send(res);
   };
 
-  static deleteCategoryMedicine = async (req, res) => {
+  static deleteBranch = async (req, res) => {
     new SuccessResponse({
-      message: "Delete category medicine Success!",
+      message: "Delete branch Success!",
       data: await BranchService.deleteBranch(req.params),
     }).send(res);
   };

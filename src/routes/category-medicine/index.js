@@ -10,8 +10,8 @@ const {
 const router = express.Router();
 
 router.get("/category-medicine", asyncHandler(getAllCategoryMedicine));
-router.patch("/category-medicine", asyncHandler(updateCategoryMedicine));
-router.delete("/category-medicine", asyncHandler(deleteCategoryMedicine));
+router.patch("/category-medicine/:id", asyncHandler(updateCategoryMedicine));
+router.delete("/category-medicine/:id", asyncHandler(deleteCategoryMedicine));
 router.post("/category-medicine", asyncHandler(createCategoryMedicine));
 
 module.exports = router;

@@ -24,7 +24,7 @@ class BranchService {
   };
 
   static createBranch = async (payload) => {
-    const { name } = payload;
+    const { address } = payload;
     const foundBranch = await Branch.findOne({
       where: { address },
     });
