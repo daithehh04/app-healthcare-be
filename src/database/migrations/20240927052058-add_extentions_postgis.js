@@ -10,7 +10,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.sequelize.query(
-      "CREATE EXTENSION IF NOT EXISTS postgis;"
+      `CREATE EXTENSION IF NOT EXISTS postgis;`
     );
   },
 
