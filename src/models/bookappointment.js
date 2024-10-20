@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       branch_id: DataTypes.INTEGER,
       phone: DataTypes.STRING,
       specialist_id: DataTypes.INTEGER,
+      results: DataTypes.TEXT,
+      is_using_medicine: DataTypes.BOOLEAN,
+      distance_using_medicine: DataTypes.INTEGER,
+      start_using_medicine: DataTypes.DATE,
     },
     {
       sequelize,
