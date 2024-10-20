@@ -23,14 +23,13 @@ class MedicineService {
       options.offset = offset;
     }
 
+    options.where = {};
     if (categoryId) {
-      options.where = { category_medicine_id: +categoryId };
+      options.where.category_medicine_id = +categoryId;
     }
 
     if (q) {
-      options.where = {
-        name: { [Op.iLike]: `%${q}%` },
-      };
+      options.where.name = { [Op.iLike]: `%${q}%` };
     }
 
     const { rows: medicines, count } = await Medicine.findAndCountAll(options);
