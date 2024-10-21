@@ -188,7 +188,7 @@ class BookAppointmentController {
   };
   static updatedBookAppointment = async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const dataBody = req.body;
     const response = {};
     try {
       const bookAppointment = await BookAppointment.findByPk(id);
@@ -197,13 +197,18 @@ class BookAppointmentController {
           .status(404)
           .json({ status: 404, message: "Lich hẹn không tồn tại!" });
       }
-      if (!status || !isValidStatus(status)) {
+      if (!dataBody.status || !isValidStatus(dataBody.status)) {
         return res.status(400).json({
           status: 404,
           message: "Trạng thái Đặt lịch không xác định!",
         });
       }
-      bookAppointment.status = status;
+      bookAppointment.status = dataBody.status;
+      bookAppointment.distance_using_medicine =
+        dataBody.distance_using_medicine;
+      bookAppointment.is_using_medicine = dataBody.is_using_medicine;
+      bookAppointment.start_using_medicine = dataBody.start_using_medicine;
+      bookAppointment.results = dataBody.results;
       bookAppointment.save();
       response.status = 200;
       response.message = "Đặt lịch thành công";

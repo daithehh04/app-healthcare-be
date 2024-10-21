@@ -74,7 +74,6 @@ class BookAppointmentService {
     }
     const { rows: appointmentsResult, count } =
       await BookAppointment.findAndCountAll(options);
-    console.log(appointmentsResult);
     const appointments = appointmentsResult.map((appointment) => ({
       doctor: {
         id: appointment.Doctor?.id,
@@ -99,6 +98,10 @@ class BookAppointmentService {
       startTime: appointment.start_time,
       endTime: appointment.end_time,
       status: appointment.status,
+      results: appointment.results,
+      is_using_medicine: appointment.is_using_medicine,
+      distance_using_medicine: appointment.distance_using_medicine,
+      start_using_medicine: appointment.start_using_medicine,
     }));
     return {
       appointments,
