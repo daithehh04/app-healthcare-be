@@ -50,11 +50,7 @@ class BookAppointmentService {
 
     if (keyword) {
       options.include.forEach((includeOption) => {
-        console.log(
-          "includeOption.model === Doctor",
-          includeOption.model === Doctor
-        );
-        if (includeOption.model === Doctor && keyword) {
+        if (includeOption.model === User && keyword) {
           includeOption.where = {
             name: {
               [Op.iLike]: `%${keyword}%`,

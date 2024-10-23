@@ -15,4 +15,5 @@ router.use("/v1/api", require("./book-appointment"));
 router.use("/v1/api", require("./category-medicine"));
 router.use("/v1/api", require("./branch"));
 router.use("/v1/api", require("./map"));
+router.use("/v1/api", require("./voucher"));
 module.exports = router;
