@@ -56,9 +56,25 @@ class VoucherService {
     }
     return voucher;
   };
+
   static createVoucher = async (payload) => {
     const voucher = await Voucher.create(payload);
     if (!voucher) throw new BadRequestError("Create voucher error");
+    return voucher;
+  };
+
+  /**
+   * Get voucher by voucher code
+   * @param {*} param
+   * @returns
+   */
+  static getVoucherByCode = async ({ userId, voucherCode }) => {
+    const voucher = await Voucher.findOne({
+      where: { user_id: +userId, voucher_code: voucherCode, is_used: false },
+    });
+    if (!voucher) {
+      throw new NotFoundError("Voucher không tồn tại!");
+    }
     return voucher;
   };
 }

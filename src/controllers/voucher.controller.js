@@ -28,6 +28,13 @@ class VoucherController {
       data: await VoucherService.createVoucher(req.body),
     }).send(res);
   };
+
+  static getVoucherByCode = async (req, res) => {
+    new CREATED({
+      message: "GetVoucherByCode OK!",
+      data: await VoucherService.getVoucherByCode(req.body),
+    }).send(res);
+  };
 }
 
 module.exports = VoucherController;
