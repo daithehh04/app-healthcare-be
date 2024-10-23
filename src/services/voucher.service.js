@@ -1,11 +1,12 @@
 const { NotFoundError, BadRequestError } = require("../core/error.response");
 const { Voucher } = require("../models/index");
 class VoucherService {
-  static getAllVouchers = async ({ page, limit }) => {
+  static getAllVouchers = async ({ page, limit, userId }) => {
     const options = {
       order: [["created_at", "desc"]],
       where: {
         is_used: false,
+        user_id: +userId,
       },
     };
     if (!+page || page < 0) {
