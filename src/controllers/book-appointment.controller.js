@@ -1,6 +1,6 @@
 const { SuccessResponse, CREATED } = require("../core/success.response.js");
 const BookAppointmentService = require("../services/book-appointment.service.js");
-const { BookAppointment, Doctor, User } = require("../models/index");
+const { BookAppointment, Doctor, User, Voucher } = require("../models/index");
 const isValidStatus = require("../utils/validStatus.js");
 const { Op } = require("sequelize");
 class BookAppointmentController {
@@ -20,6 +20,7 @@ class BookAppointmentController {
       branch_id,
       phone,
       specialist_id,
+      voucher_code,
     } = req.body;
     let branchId;
     let specialistId;
@@ -30,6 +31,7 @@ class BookAppointmentController {
     console.log("Branch_id : ", branch_id);
     console.log("Sepecialist_id : ", specialist_id);
     console.log("PHone : ", phone);
+    console.log("Voucher_code : ", voucher_code);
     //     console.log(req.body);
     const response = {};
     try {
@@ -43,7 +45,18 @@ class BookAppointmentController {
           branch_id: branch_id,
           phone: phone,
           specialist_id: specialist_id,
+          voucher_code: voucher_code,
         });
+        if (voucher_code) {
+          const existingVoucher = await Voucher.findOne({
+            where: {
+              voucher_code,
+            },
+          });
+          await existingVoucher.update({
+            is_used: true,
+          });
+        }
         response.status = 201;
         response.message = "thêm thành công";
       } else {
@@ -155,7 +168,20 @@ class BookAppointmentController {
           status: "pending",
           branch_id: branchId,
           specialist_id: specialistId,
+          voucher_code: voucher_code || null,
         });
+        // update voucher to used
+        if (voucher_code) {
+          const existingVoucher = await Voucher.findOne({
+            where: {
+              voucher_code,
+            },
+          });
+          await existingVoucher.update({
+            is_used: true,
+          });
+        }
+        //
         response.status = 201;
         response.message = "cập nhật thành công";
       }

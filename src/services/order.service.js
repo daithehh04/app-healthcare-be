@@ -107,6 +107,21 @@ class CartService {
     });
     return carts;
   };
+  static checkExistingMedicine = async ({ user_id, product_id, status }) => {
+    console.log("userId : ", user_id);
+    console.log("productId : ", product_id);
+    const cart = await Cart.findOne({
+      where: {
+        user_id,
+        product_id,
+        status,
+      },
+    });
+    if (cart) {
+      return true;
+    }
+    return false;
+  };
 }
 
 module.exports = CartService;

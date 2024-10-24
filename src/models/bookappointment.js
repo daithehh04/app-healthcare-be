@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       is_using_medicine: DataTypes.BOOLEAN,
       distance_using_medicine: DataTypes.INTEGER,
       start_using_medicine: DataTypes.DATE,
+      voucher_code: DataTypes.STRING,
     },
     {
       sequelize,

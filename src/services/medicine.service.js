@@ -83,6 +83,7 @@ class MedicineService {
     if (!medicine) throw new BadRequestError("Create medicine error");
     return medicine;
   };
+ 
 }
 
 module.exports = MedicineService;

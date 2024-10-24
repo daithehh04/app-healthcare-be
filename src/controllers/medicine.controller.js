@@ -35,6 +35,7 @@ class MedicineController {
       data: await MedicineService.createMedicine(req.body),
     }).send(res);
   };
+ 
 }
 
 module.exports = MedicineController;
