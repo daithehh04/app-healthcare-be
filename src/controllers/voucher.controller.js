@@ -8,6 +8,13 @@ class VoucherController {
     }).send(res);
   };
 
+  static findAllVouchers = async (req, res) => {
+    new SuccessResponse({
+      message: "Find all vouchers Success!",
+      data: await VoucherService.findAllVouchers(req.query),
+    }).send(res);
+  };
+
   static deleteVoucher = async (req, res) => {
     new SuccessResponse({
       message: "Delete vouchers Success!",
@@ -19,6 +26,13 @@ class VoucherController {
     new SuccessResponse({
       message: "Get voucher detail Success!",
       data: await VoucherService.getVoucherDetail(req.params),
+    }).send(res);
+  };
+
+  static updateVoucher = async (req, res) => {
+    new SuccessResponse({
+      message: "Update voucher Success!",
+      data: await VoucherService.updateVoucher(req.params, req.body),
     }).send(res);
   };
 

@@ -1,6 +1,24 @@
 const { NotFoundError, BadRequestError } = require("../core/error.response");
 const { Voucher } = require("../models/index");
 class VoucherService {
+  static findAllVouchers = async ({ page, limit }) => {
+    const options = {
+      order: [["created_at", "desc"]],
+    };
+    if (!+page || page < 0) {
+      page = 1;
+    }
+    if (limit && Number.isInteger(+limit)) {
+      options.limit = limit;
+      const offset = (page - 1) * limit;
+      options.offset = offset;
+    }
+    const { rows: vouchers, count } = await Voucher.findAndCountAll(options);
+    return {
+      vouchers,
+      count,
+    };
+  };
   static getAllVouchers = async ({ page, limit, userId }) => {
     const options = {
       order: [["created_at", "desc"]],
@@ -38,6 +56,7 @@ class VoucherService {
     });
     return deleted;
   };
+
   static updateVoucher = async ({ id }, payload) => {
     const voucher = await Voucher.findByPk(id);
     if (!voucher) {
@@ -58,6 +77,13 @@ class VoucherService {
   };
 
   static createVoucher = async (payload) => {
+    console.log("payload:", payload);
+    const findVoucher = await Voucher.findOne({
+      where: { voucher_code: payload.voucher_code },
+    });
+    if (findVoucher) {
+      throw new BadRequestError("Voucher exist!");
+    }
     const voucher = await Voucher.create(payload);
     if (!voucher) throw new BadRequestError("Create voucher error");
     return voucher;

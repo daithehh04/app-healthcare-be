@@ -24,15 +24,6 @@ class BookAppointmentController {
     } = req.body;
     let branchId;
     let specialistId;
-    console.log("Doctor_id : ", doctorId);
-    console.log("User_id : ", userId);
-    console.log("Start_time : ", startTime);
-    console.log("End_time : ", endTime);
-    console.log("Branch_id : ", branch_id);
-    console.log("Sepecialist_id : ", specialist_id);
-    console.log("PHone : ", phone);
-    console.log("Voucher_code : ", voucher_code);
-    //     console.log(req.body);
     const response = {};
     try {
       if (!doctorId) {

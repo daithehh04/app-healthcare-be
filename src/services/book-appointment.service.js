@@ -98,6 +98,7 @@ class BookAppointmentService {
       is_using_medicine: appointment.is_using_medicine,
       distance_using_medicine: appointment.distance_using_medicine,
       start_using_medicine: appointment.start_using_medicine,
+      voucher_code: appointment.voucher_code,
     }));
     return {
       appointments,
