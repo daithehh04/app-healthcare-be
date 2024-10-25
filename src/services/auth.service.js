@@ -10,16 +10,20 @@ class AuthService {
     });
   };
 
-  static handleChangeInfo = async ({ oldPassword, password, idUser, name }) => {
-    const foundUser = await User.findByPk(idUser);
+  static handleChangeInfo = async (data) => {
+    const foundUser = await User.findByPk(data.idUser);
     if (!foundUser) throw new BadRequestError("Not found User!");
-    const match = await bcrypt.compare(oldPassword, foundUser.password);
-    if (!match) throw new AuthFailureError("Authentication Error");
-    const hashPassword = bcrypt.hashSync(password, 10);
-    await foundUser.update({
-      password: hashPassword,
-      name,
-    });
+    const objectUpdate = {};
+    if (data?.name) {
+      objectUpdate.name = data.name;
+    }
+    if (data?.password && data?.oldPassword) {
+      const match = await bcrypt.compare(data.oldPassword, foundUser.password);
+      if (!match) throw new AuthFailureError("Authentication Error");
+      const hashPassword = bcrypt.hashSync(data.password, 10);
+      objectUpdate.password = hashPassword;
+    }
+    await foundUser.update(objectUpdate);
   };
 
   static createUser = async (payload) => {
