@@ -10,9 +10,11 @@ class AuthService {
     });
   };
 
-  static handleChangeInfo = async ({ password, idUser, name }) => {
+  static handleChangeInfo = async ({ oldPassword, password, idUser, name }) => {
     const foundUser = await User.findByPk(idUser);
     if (!foundUser) throw new BadRequestError("Not found User!");
+    const match = await bcrypt.compare(oldPassword, foundUser.password);
+    if (!match) throw new AuthFailureError("Authentication Error");
     const hashPassword = bcrypt.hashSync(password, 10);
     await foundUser.update({
       password: hashPassword,
