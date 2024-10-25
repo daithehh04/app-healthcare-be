@@ -3,6 +3,8 @@ const BookAppointmentService = require("../services/book-appointment.service.js"
 const { BookAppointment, Doctor, User, Voucher } = require("../models/index");
 const isValidStatus = require("../utils/validStatus.js");
 const { Op } = require("sequelize");
+const sendMail = require("../utils/mail.js");
+const moment = require("moment");
 class BookAppointmentController {
   static getAllBookAppointment = async (req, res) => {
     console.log(req.query);
@@ -15,6 +17,7 @@ class BookAppointmentController {
     const {
       doctorId,
       userId,
+      email,
       startTime,
       endTime,
       branch_id,
@@ -132,15 +135,6 @@ class BookAppointmentController {
             message: "Bác sĩ đã có lịch hẹn trong khoảng thời gian này!",
           });
         }
-        // await userFind.addDoctor(doctorFind,
-        //      {
-        //           through:
-        //           {
-        //                start_time: startTime,
-        //                end_time: endTime,
-        //                status: 'pending',
-        //           }
-        //      });
         if (!branch_id) {
           branchId = doctorFind.branch_id;
           console.log("branchId : ", branchId);
@@ -149,7 +143,6 @@ class BookAppointmentController {
           specialistId = doctorFind.doctor_group_id;
           console.log("specialistId : ", specialistId);
         }
-        // console.log(branch_id);
         await BookAppointment.create({
           doctor_id: doctorId,
           user_id: userId,
@@ -200,6 +193,13 @@ class BookAppointmentController {
     } catch (e) {
       response.status = 500;
       response.message = e?.message;
+    }
+    if (response.status === 201) {
+      await sendMail(email, "Thank you", "Đặt lịch thành công!", {
+        start_time: moment(startTime).format("h:mm:ss a"),
+        end_time: moment(endTime).format("h:mm:ss a"),
+        date: moment(startTime).format("DD-MM-YYYY"),
+      });
     }
     return res.status(response.status).send(response);
   };
