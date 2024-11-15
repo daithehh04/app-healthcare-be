@@ -1,5 +1,5 @@
 const { NotFoundError, BadRequestError } = require("../core/error.response");
-const { Branch } = require("../models/index");
+const { Branch, Sequelize } = require("../models/index");
 
 class BranchService {
   static getAllBranches = async ({ page, limit }) => {
@@ -24,7 +24,12 @@ class BranchService {
   };
 
   static createBranch = async (payload) => {
-    const { address } = payload;
+    const { address, latitude, longitude } = payload;
+    payload.geom = Sequelize.fn(
+      'ST_SetSRID',
+      Sequelize.fn('ST_GeomFromText', `POINT(${+longitude} ${+latitude})`),
+      4326 // SRID cho hệ tọa độ WGS84
+    );
     const foundBranch = await Branch.findOne({
       where: { address },
     });
