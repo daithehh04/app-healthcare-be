@@ -29,9 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       phone: DataTypes.STRING,
       specialist_id: DataTypes.INTEGER,
       results: DataTypes.TEXT,
-      is_using_medicine: DataTypes.BOOLEAN,
-      distance_using_medicine: DataTypes.INTEGER,
-      start_using_medicine: DataTypes.DATE,
       voucher_code: DataTypes.STRING,
     },
     {
