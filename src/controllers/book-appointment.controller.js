@@ -169,27 +169,6 @@ class BookAppointmentController {
         response.status = 201;
         response.message = "cập nhật thành công";
       }
-      // await userFind.addDoctor(doctorFind,
-      //      {
-      //           through:
-      //           {
-      //                start_time: startTime,
-      //                end_time: endTime,
-      //                status: 'pending',
-      //           }
-      //      });
-      // const branch_id = doctorFind.branch_id;
-      // console.log(branch_id);
-      // await BookAppointment.create({
-      //   doctor_id: doctorId,
-      //   user_id: userId,
-      //   start_time: startTime,
-      //   end_time: endTime,
-      //   status: "pending",
-      //   branch_id: branch_id,
-      // });
-      // response.status = 201;
-      // response.message = "cập nhật thành công";
     } catch (e) {
       response.status = 500;
       response.message = e?.message;
@@ -197,7 +176,7 @@ class BookAppointmentController {
     if (response.status === 201) {
       await sendMail(email, "Thank you", "Đặt lịch thành công!", {
         start_time: moment(startTime).format("h:mm:ss a"),
-        end_time: moment(endTime).format("h:mm:ss a"),
+        end_time: doctorId ? moment(endTime).format("h:mm:ss a") : null,
         date: moment(startTime).format("DD-MM-YYYY"),
       });
     }

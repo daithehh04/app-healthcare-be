@@ -18,7 +18,7 @@ const sendMail = async (to, subject, message, data) => {
     subject, // Subject line
     html: `<div>${message}</div>
     <div>Ngày: ${data.date}</div>
-    <div>Thời gian: ${data.start_time} - ${data.end_time}</div>
+    <div>Thời gian: ${data.start_time} ${data?.end_time ? `- ${data?.end_time}` :'' }</div>
       <i>Cảm ơn bạn đã đặt lịch, hãy chú ý thời gian lịch hẹn của mình nhé!</i>
     `, // html body
   });
