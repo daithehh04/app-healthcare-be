@@ -96,7 +96,7 @@ class VoucherService {
    */
   static getVoucherByCode = async ({ userId, voucherCode }) => {
     const voucher = await Voucher.findOne({
-      where: { user_id: +userId, voucher_code: voucherCode, is_used: false },
+      where: { user_id: +userId, voucher_code: voucherCode },
     });
     if (!voucher) {
       throw new NotFoundError("Voucher không tồn tại!");
